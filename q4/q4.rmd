@@ -1,0 +1,46 @@
+# Questão 4
+**4.1**
+
+a. Verifique que f(x) é uma função de densidade de probabilidade.
+$$
+\ \int_{1}^{\infty} \frac{3}{x^4} \,dx \ = 3 * (0 - \frac{1}{-3 * 1^3}) = 1
+$$
+
+b. Calcule $$P(3,4 \leq X < 7,1)$$
+Com isso, temos que:
+$$
+\ \int_{3,4}^{7,1} \frac{3}{x^4} \,dx \ = 3 * (\frac{1}{-3 * 7,1^3} - \frac{1}{-3 * 3,4^3}) = 0,0226
+$$
+
+c. Determine o valor esperado de X
+$$
+\ \int_{3,4}^{7,1} x * \frac{3}{x^4} \,dx \ = 3 * (\frac{1}{-2 * 7,1^2} - \frac{1}{-2 * 3,4^2}) = 0,1000
+$$
+
+d. Determine a variância de X
+$$
+\ \int_{3,4}^{7,1} (x - 0,1)^2 * \frac{3}{x^4} \,dx \ = 0,4400
+$$
+
+**4.2**
+
+Como temos variáveis aletórias indenpendentes, podemos considerar:
+$$
+E[X] = \frac{8}{E[Y^2]}
+$$
+$$
+\frac{24}{E[X^2]} = E[Y^2]
+$$
+$$
+E[X^2] = \frac{6}{E[Y]}
+$$
+$$
+2 = E[Y] 
+$$
+Portanto, E[X] = 1
+
+**4.3**
+
+$$
+\ \int_{0}^{1} x * \frac{1}{\pi(1+x^2)} \,dx \ = 0,1103
+$$
