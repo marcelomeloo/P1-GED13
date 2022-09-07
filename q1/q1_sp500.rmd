@@ -15,8 +15,8 @@
 ### Dados do SP 500
 ```{r}
   dados.sp500 <- quantmod::getSymbols("^GSPC", src = "yahoo", from = start, to = end, auto.assign = FALSE)
-  dados.sp500
-  nasdaq <- na.omit(dados.nasdaq)
+  # head(dados.sp500)
+  nasdaq <- na.omit(dados.sp500)
 ```
 
 #### Cria o vetor de preco de fechamento
@@ -57,7 +57,7 @@
 
 #### 6. Grafico de linha do Preco de Fechamento 
 ```{r}
-  ggplot(dados.dj, aes(x = index(dados.dj), y = preco_fechamento)) + geom_line() +
+  ggplot(dados.sp500, aes(x = index(dados.sp500), y = preco_fechamento)) + geom_line() +
         labs(title="Grafico do SP 500", subtitle="Preco de Fechamento", caption="Fonte: https://finance.yahoo.com/", x = "Data ", y="Preco (R$)") +
         theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +
         scale_x_date(date_labels = "%b %y", date_breaks = "1 month")
@@ -119,7 +119,6 @@
                   bottom = text_grob("Fonte: https://finance.yahoo.com/",
                   color = "black", hjust = 1.02, x = 1, size = 10))
 ```
-
 
 #### 10. Histograma para dados originais (Preco de Fechamento e Retorno) e padronizados 
 ```{R}
