@@ -1,0 +1,100 @@
+# Questao 2
+>Sabe-se da combinatória que 
+$$
+  {n \choose i} = \frac{n!}{(n-i)!*i!}
+$$
+
+### Caso 6+2:
+>Dado que deve-se escolher 6 numero de 50 da matriz de numeros e escolher 2 de 6
+>da matriz de trevos, temos, entao um problema de combinaçao, em que o numero  total
+>de combinacoes possiveis é dado por (50 6)x(6 2) = 238.360.500.
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{238.360.500} = 4,2*10^{-9}
+$$
+
+### Caso 6+1 e 6+0:
+>Nesse caso temos a soma de dois possiveis cenarios, isto é, quando nos trevos (1) 
+>somente um dos pares escolhidos é o certo e quando nos trevos (2) nenhum dos pares
+>escolhidos é o certo. Assim, temos para:
+>- (1): deve-se escolher 1 dos 4 trevos nao sorteados e 1 dos 2 trevos sorteados
+>- (2): deve-se escolher 2 dos 4 trevos nao sorteados
+>Por fim, temos: 238.360.500/[(4 1)x(2 1) + (4 2)] = 17.025.750
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{17.025.750} = 5,9*10^{-8}
+$$
+
+### Caso 5+2:
+> Aqui é escolhido 1 dos 44 numeros nao sorteados para ser errado e 5 dos 6 sorteados
+> para ser o acerto, assim: 238.360.500/[(44 1)x(6 5)] = 902.881
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{902.881} = 1,1*10^{-6}
+$$
+
+### Caso 5+1 e 5+0:
+>- (1): deve-se escolher 1 dos 4 trevos nao sorteados, 1 dos 2 trevos sorteados, 1 dos
+>44 numeros nao sorteados para ser errado e 5 dos 6 sorteados para ser o acerto.
+>- (2): deve-se escolher 2 dos 4 trevos nao sorteados, 1 dos 44 numeros nao sorteados
+>para ser errado e 5 dos 6 sorteados para ser o acerto. 
+>Temos: 238.360.500/[(4 1)x(2 1)x(44 1)x(6 5) + (4 2)x(44 1)x(6 5)] = 64.491
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{64.491} = 1,5*10^{-5}
+$$
+
+### Caso 4+2:
+> Com raciocinio similar ao Caso 5+2, temos: 238.360.500/[(44 2)x(6 4)] = 16.798
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{16.798} = 6,0*10^{-5}
+$$
+
+### Caso 4+1 e 4+0:
+> Com raciocinio similar ao Caso 5+1 e 5+0, temos: 
+> 238.360.500/[(4 1)x(2 1)x(44 2)x(6 4) + (4 2)x(44 2)x(6 4)] = 1200
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{1200} = 8,3*10^{-4}
+$$
+
+### Caso 3+2:
+> Com raciocinio similar ao Caso 5+2, temos: 238.360.500/[(44 3)x(6 3)] = 900
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{900} = 1,1*10^{-3}
+$$
+
+### Caso 3+1:
+> Com raciocinio similar ao Caso 5+1 e 5+0, temos: 
+> 238.360.500/[(4 1)x(2 1)x(44 3)x(6 3)] = 112
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{112} = 8,9*10^{-3}
+$$
+
+### Caso 2+2:
+> Com raciocinio similar ao Caso 5+2, temos: 238.360.500/[(44 4)x(6 2)] = 117
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{117} = 8,5*10^{-3}
+$$
+
+### Caso 2+1:
+> Com raciocinio similar ao Caso 3+1, temos: 
+> 238.360.500/[(4 1)x(2 1)x(44 4)x(6 2)] = 15
+
+>Ademais, a probabilidade associada deve ser: 
+$$
+\frac{1}{15} = 6,7*10^{-2}
+$$

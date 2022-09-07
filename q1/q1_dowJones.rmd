@@ -1,0 +1,206 @@
+>### Dados Dow Jones
+```{r}
+  dados.dj <- quantmod::getSymbols("^DJI",src = "yahoo", from = start,to = end,auto.assign = FALSE)
+  dados.dj
+  dj <- na.omit(dados.dj)
+```
+
+#### Cria o vetor de preco de fechamento
+```{r}
+  preco_fechamento <- dados.dj$"DJI.Close"
+```
+
+#### 1. Media do Preco de Fechamento ----
+```{r}
+  media_pf <- mean(preco_fechamento)
+  media_pf
+```
+
+#### 2. Moda do Preco de Fechamento ----
+```{r}
+  tab_preco_fechamento <- table(preco_fechamento)
+  moda_pf <- names(tab_preco_fechamento)[which(tab_preco_fechamento==max(tab_preco_fechamento))]
+  moda_pf
+```
+
+#### 3. Mediana do Preco de Fechamento ----
+```{r}
+  mediana_pf <- median(preco_fechamento)
+  mediana_pf
+```
+
+#### 4. Variancia Nao Viesada ----
+```{r}
+  variancia_pf <- var(preco_fechamento)
+  variancia_pf
+```
+
+#### 5. Desvio-padrao ----
+```{r}
+  desv_pad_pf <- sd(preco_fechamento)
+  desv_pad_pf
+```
+
+#### 6. Grafico de linha do Preco de Fechamento ----
+```{r}
+  ggplot(dados.dj, aes(x = index(dados.dj), y = preco_fechamento)) + geom_line() +labs(title="Grafico do Dow Jones", subtitle="Preco de Fechamento", caption="Fonte: https://finance.yahoo.com/", x = "Data ", y="Preco (R$)") +theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +scale_x_date(date_labels = "%b %y", date_breaks = "1 month")
+```
+
+#### 7. Retorno, com base no Preco de Fechamento ----
+```{r}
+  retorno_pf <- (preco_fechamento - shift(preco_fechamento, 1L, type="lag"))/shift(preco_fechamento, 1L, type="lag")
+  retorno_pf <- na.omit(retorno_pf)
+  tabela_preco_retorno <- cbind(preco_fechamento, retorno_pf)
+  head(tabela_preco_retorno)
+```
+
+#### 8. Grafico de linha do Retorno ----
+```{r}
+  ggplot(retorno_pf, aes(x = index(retorno_pf), y = 100*retorno_pf)) +geom_line() +labs(title="Grafico do Dow Jones", subtitle="Retorno", caption="Fonte: https://finance.yahoo.com/", x = "Data ", y="Retorno (%)") +theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) +scale_x_date(date_labels = "%b %y", date_breaks = "1 month")
+```
+
+#### 9. Box plot para dados originais (Preco de Fechamento e Retorno) e padronizados ----
+```{R}
+  boxplot_pf <- ggplot(data = preco_fechamento, aes(x = "", y = preco_fechamento))+
+                      geom_violin(trim = FALSE, color="blue") +
+                      geom_boxplot(width=0.4, color="blue", alpha = 1, outlier.size = 1) +
+                      labs(x = "Preco", y = "") +
+                      scale_y_continuous(breaks = seq(16, 23, by = 1))
+
+  z_preco_fechamento <- (preco_fechamento - mean(preco_fechamento)) / sd(preco_fechamento)
+
+  boxplot_z_pf <- ggplot(data = z_preco_fechamento, aes(x = "", y = z_preco_fechamento)) +
+                        geom_violin(trim = FALSE, color="goldenrod3") +
+                        geom_boxplot(width=0.4, color="red", alpha = 1, outlier.size = 1)+
+                        labs(x = "Preco Padronizado", y = "") +
+                        scale_y_continuous(breaks = seq(-5, 23, by = 1))
+
+  boxplots_pf <- ggarrange(boxplot_pf, boxplot_z_pf,ncol = 2, nrow = 1)
+  annotate_figure(boxplots_pf, top = text_grob("Boxplot/Vioplot do Preco de Fechamento\ne Preco de Fechamento Padronizado", color = "Black", face = "bold", size = 14), bottom = text_grob("Fonte: https://finance.yahoo.com/", color = "black", hjust = 1.02, x = 1,size = 10))
+
+  boxplot_retorno <- ggplot(data = retorno_pf, aes(x = "", y = 100*retorno_pf)) +
+                            geom_violin(trim = FALSE, color="blue") +
+                            geom_boxplot(width=0.4, color="blue", alpha = 1, outlier.size = 1) +
+                            labs(x = "Retorno (%)", y = "") +
+                            scale_y_continuous(breaks = seq(-7, 6, by = 2))
+
+  z_retorno_pf <- (retorno_pf - mean(retorno_pf))/(sd(retorno_pf))
+
+  boxplot_z_retorno_pf <- ggplot(data = z_retorno_pf, aes(x = "", y = z_retorno_pf)) +
+                            geom_violin(trim = FALSE, color="red") +
+                            geom_boxplot(width=0.4, color="red", alpha = 1, outlier.size = 1) +
+                            labs(x = "Retorno Padronizado", y = "") +
+                            scale_y_continuous(breaks = seq(-3, 11, by = 2))
+
+  boxplots_retorno <- ggarrange(boxplot_retorno, boxplot_z_retorno_pf,ncol = 2, nrow = 1)
+  annotate_figure(boxplots_retorno, top = text_grob("Boxplot/Vioplot do Retorno\ne Retorno Padronizado",
+                  color = "Black", face = "bold", size = 14),
+                  bottom = text_grob("Fonte: https://finance.yahoo.com/",
+                  color = "black", hjust = 1.02, x = 1, size = 10))
+```
+
+
+#### 10. Histograma para dados originais (Preco de Fechamento e Retorno) e padronizados ----
+```{R}
+  histograma_pf <- ggplot(data = preco_fechamento,aes(x = preco_fechamento)) +
+                          geom_histogram(color="blue", fill = "white", bins = 30) +
+                          labs(y = "Quantidade", x = "Preco") +
+                          scale_x_continuous(breaks = seq(17, 22, by = 0.5)) +
+                          scale_y_continuous(breaks = seq(0, 30, by = 5)) +
+                          theme(plot.title = element_text(hjust = 0.5))
+
+  histograma_z_pf <- ggplot(data = z_preco_fechamento,aes(x = z_preco_fechamento)) +
+                            geom_histogram(color="red", fill = "white", bins = 30) +
+                            labs(y = "Quantidade", x = "Preco Padronizado") +
+                            scale_x_continuous(breaks = seq(-2, 3.5, by = 0.5)) +
+                            scale_y_continuous(breaks = seq(0, 50, by = 5)) +
+                            theme(plot.title = element_text(hjust = 0.5))
+
+  histogramas_pf <- ggarrange(histograma_pf, histograma_z_pf,ncol = 1, nrow = 2)
+  annotate_figure(histogramas_pf, top = text_grob("Histograma do Preco de Fechamento",
+                  color = "Black", face = "bold", size = 14),
+                  bottom = text_grob("Fonte: https://finance.yahoo.com/",
+                  color = "black", hjust = 1.02, x = 1, size = 10))
+
+  histograma_retorno <- ggplot(data = retorno_pf,aes(x = 100*retorno_pf)) + 
+                                geom_histogram(color="blue", fill = "white", bins = 25) + 
+                                labs(y = "Quantidade", x = "Retorno (%)") + 
+                                scale_x_continuous(breaks = seq(-6, 6, by = 1)) + 
+                                scale_y_continuous(breaks = seq(0, 40, by = 5)) + 
+                                theme(plot.title = element_text(hjust = 0.5))
+
+  histograma_z_retorno <- ggplot(data = z_retorno_pf ,aes(x = z_retorno_pf)) + 
+                                geom_histogram(color="red", fill = "white", bins = 25) + 
+                                labs(y = "Quantidade", x = "Retorno Padronizado") + 
+                                scale_x_continuous(breaks = seq(-6, 6, by = 1)) + 
+                                scale_y_continuous(breaks = seq(0, 35, by = 5)) + 
+                                theme(plot.title = element_text(hjust = 0.5))
+
+  histogramas_retorno <- ggarrange(histograma_retorno, histograma_z_retorno,ncol = 1, nrow = 2)
+  annotate_figure(histogramas_retorno, top = text_grob("Histograma do Retorno",
+                  color = "Black", face = "bold", size = 14),
+                  bottom = text_grob("Fonte: https://finance.yahoo.com/",
+                  color = "black", hjust = 1.02, x = 1, size = 10))
+```
+
+#### 11. QQPlot do retorno.  ----
+```{R}
+  qqplot_retorno <- ggplot(data = retorno_pf, aes(sample = 100*as.vector(retorno_pf))) +
+                          stat_qq(size = 0.6) +labs(x = "Quantis Teoricos", y = "Quantis Amostrais",
+                          title = "QQPlot do Retorno (%)") + theme(plot.title = element_text(hjust = 0.5)) +
+                          scale_y_continuous(breaks = seq(-6, 4.5, by = 1.5))
+```
+
+#### 12. QQLine do retorno (fazer junto com o QQPlot).  ----
+```{R}
+  histograma_retorno_qqplot <- ggplot(data = retorno_pf,aes(x = 100*retorno_pf)) +
+                                      geom_histogram(aes(y=..density..),color="blue", fill = "white", bins = 25) +
+                                      stat_function(fun = dnorm, args = list(mean = mean(100*retorno_pf), sd = sd(100*retorno_pf)),
+                                      col="red",lwd=1)+ theme(axis.text.x = element_blank(), axis.text.y = element_blank()) +
+                                      labs(y = "", x = "") 
+
+  qqplot_linha_retorno <- ggplot(data = retorno_pf, aes(sample = 100*as.vector(retorno_pf))) +
+                                stat_qq(size = 0.6) + labs(x = "Quantis Teoricos", y = "Quantis Amostrais", title = "QQPlot do Retorno (%)") +
+                                theme(plot.title = element_text(hjust = 0.5)) +scale_y_continuous(breaks = seq(-6, 4.5, by = 1.5)) +
+                                stat_qq_line(col = 2,lwd=1,lty=1) 
+
+  plot_principal <- qqplot_linha_retorno
+
+  plot_para_inserir <- histograma_retorno_qqplot
+
+  plot.com.insercao <- ggdraw() + draw_plot(plot_principal) + draw_plot(plot_para_inserir, x = 0.07, y = 0.6, width = .3, height = .3)
+
+  plot.com.insercao
+```
+
+#### 13. Assimetria amostral n?o viesada do retorno.   ----
+```{R}
+  n <- length(retorno_pf)
+  somatorio <- c()
+  for(i in 1:n){
+    somatorio[i] <- ((retorno_pf[i] - mean(retorno_pf))/ sd(retorno_pf))^3
+  }
+  p1_s3 <- n/((n -1)*(n-2))
+  p2_s3 <- sum(somatorio)
+  s3 <- p1_s3*p2_s3
+  s3
+```
+
+#### 14. Curtose amostral n?o viesada do retorno.   ----
+```{R}
+  n <- length(retorno_pf)
+  somatorio <- c()
+  for(i in 1:n){
+    somatorio[i] <- ((retorno_pf[i] - mean(retorno_pf))/ sd(retorno_pf))^4
+  }
+  p1_s4 <- (n*(n +1))/((n -1)*(n-2)*(n-3))
+  p2_s4 <- (sum(somatorio))
+  p3_s4 <- (3*((n-1)^2))/((n-2)*(n-3))
+  s4 <- p1_s4 * p2_s4 - p3_s4
+  s4
+```
+
+```{R}
+  library("knitr")
+  knit("./q1/q1_dowJones.rmd", output = "./q1/q1_dowJones.md")
+```
