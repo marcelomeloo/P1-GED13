@@ -1,0 +1,14 @@
+```{R child='q1_sp500.rmd'}
+```
+```{R child='q1_dowJones.rmd'}
+```
+```{R child='q1_nasdaq.rmd'}
+```
+```{R child='q1_bovespa.rmd'}
+```
+```{R child='q1_brent.rmd'}
+```
+```{R child='q1_dolarReal.rmd'}
+```
+```{R child='q1_btc.rmd'}
+```

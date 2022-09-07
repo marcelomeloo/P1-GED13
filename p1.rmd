@@ -1,0 +1,13 @@
+```{R child='./q1/q1.rmd'}
+```
+```{R child='./q2/q2.rmd'}
+```
+```{R child='./q3/q3.rmd'}
+```
+```{R child='./q4/q4.rmd'}
+```
+
+```{R}
+  library("knitr")
+  knit("p1.rmd", output = "p1.md")
+```
